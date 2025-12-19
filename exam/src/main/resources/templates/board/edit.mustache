@@ -1,0 +1,41 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        function mod_ok(){
+
+            var obj = {"id":$("#id").val(), "title":$("#title").val(), "content":$("#content").val()};
+            $.ajax({
+                url:"/api/boards/{{board.id}}",
+                type:"PUT",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(obj),
+                dataType:"json",
+                success:function(data){
+                    alert(data.title + data.content);
+                    //location.href = "/board";
+
+                },error:function(xhr){
+
+                       alert(xhr.status);
+                        const error = JSON.parse(xhr.responseText);
+                        alert(error.message);
+                }
+
+            });
+        }
+    </script>
+</head>
+<body>
+<h1>글 수정</h1>
+<form method="post" action="/board/modify">
+    <input type="hidden" id="id" name="id" value="{{board.id}}">
+    제목 : <input type="text" id="title" name="title" value="{{board.title}}"><br />
+    내용 : <textarea id="content" name="content">{{board.content}}</textarea><br />
+    <button>글 수정하기</button>  <input type="button" value="Ajax로 글 수정하기" onclick="mod_ok();">
+</form>
+</body>
+</html>

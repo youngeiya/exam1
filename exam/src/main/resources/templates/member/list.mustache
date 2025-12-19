@@ -1,0 +1,30 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body>
+<table border="1">
+<tr>
+    <th>아이디</th>
+    <th>이름</th>
+    <th>나이</th>
+    <th>주소</th>
+    <th>전화번호</th>
+</tr>
+    {{#mlist}}
+        <tr>
+            <td><a href="/member/delete?id={{id}}">{{id}}</a></td>
+
+            <td><a href="/member/edit?id={{id}}">{{name}}</a></td>
+
+            <td>{{age}}</td>
+            <td>{{addr}}</td>
+            <td>{{mobile}}</td>
+        </tr>
+
+{{/mlist}}
+</table>
+</body>
+</html>

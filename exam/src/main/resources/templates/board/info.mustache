@@ -1,0 +1,93 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        // 댓글 삭제
+        function deleteComment(id, boardId) {
+            if(!confirm("정말 삭제하시겠습니까?")) return;
+
+            $.ajax({
+                url: "/comment/delete/" + id,   // ✅ PathVariable 맞추기
+                type: "POST",
+                data: { board_Id: boardId },    // ✅ RequestParam 맞추기
+                success: function() {
+                    $("#comment-" + id).remove(); // 화면에서 바로 제거
+                },
+                error: function(xhr) {
+                    alert("삭제 실패: " + xhr.status);
+                }
+            });
+        }
+
+        // 수정 폼 보여주기
+        function showEditForm(id, name, content, boardId) {
+            $("#editId").val(id);
+            $("#editBoardId").val(boardId);
+            $("#editName").val(name);
+            $("#editContent").val(content);
+            $("#editForm").show();
+        }
+
+        // 댓글 수정 Ajax
+        function updateComment() {
+            var obj = {
+                id: $("#editId").val(),
+                boardId: $("#editBoardId").val(),
+                name: $("#editName").val(),
+                content: $("#editContent").val()
+            };
+
+            $.ajax({
+                url: "/comment/update",   // ✅ Controller 매핑과 맞춤
+                type: "POST",
+                data: obj,
+                success: function() {
+                    $("#comment-" + obj.id).html(
+                        obj.name + " : " + obj.content +
+                        ' <button onclick="showEditForm('+obj.id+', \''+obj.name+'\', \''+obj.content+'\', '+obj.boardId+')">수정</button>' +
+                        ' <button onclick="deleteComment('+obj.id+', '+obj.boardId+')">삭제</button>'
+                    );
+                    $("#editForm").hide();
+                },
+                error: function(xhr) {
+                    alert("수정 실패: " + xhr.status);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<h1>{{board.id}} 상세보기</h1>
+{{board.title}}<br />
+{{board.content}}
+
+<h2>댓글</h2>
+{{#comment}}
+    <div id="comment-{{id}}">
+        {{name}} : {{content}}
+        <button onclick="showEditForm({{id}}, '{{name}}', '{{content}}', {{boardId}})">수정</button>
+        <button onclick="deleteComment({{id}}, {{boardId}})">삭제</button>
+    </div>
+{{/comment}}
+
+<!-- 숨겨진 수정 폼 -->
+<div id="editForm" style="display:none;">
+    <input type="hidden" id="editId">
+    <input type="hidden" id="editBoardId">
+    작성자: <input type="text" id="editName"><br/>
+    댓글: <input type="text" id="editContent"><br/>
+    <button onclick="updateComment()">수정 완료</button>
+</div>
+
+<h2>댓글 등록하기</h2>
+<form method="post" action="/comment/create">
+    <input type="hidden" name="boardId" value="{{board.id}}">
+    작성자 : <input type="text" name="name"><br />
+    댓글 : <input type="text" name="content"><br />
+    <button>댓글 등록</button>
+</form>
+</body>
+</html>
