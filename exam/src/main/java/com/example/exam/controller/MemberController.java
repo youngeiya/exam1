@@ -36,15 +36,15 @@ public class MemberController {
         return "member/login";
     }
 
-    @PostMapping("/member/auth")
-    public String authMember(MemberForm dto, HttpSession session) {
-        log.info("dto {}", dto.toString());
-        MemberForm loginedMember = memberService.login(dto);
-        session.setAttribute("User", loginedMember);
-        MemberForm user = (MemberForm)session.getAttribute("User");
-        log.info("세션 정보 : {} ", user.getId());
-        return "redirect:/home";
-    }
+//    @PostMapping("/member/auth")
+//    public String authMember(MemberForm dto, HttpSession session) {
+//        log.info("dto {}", dto.toString());
+//        MemberForm loginedMember = memberService.login(dto);
+//        session.setAttribute("User", loginedMember);
+//        MemberForm user = (MemberForm)session.getAttribute("User");
+//        log.info("세션 정보 : {} ", user.getId());
+//        return "redirect:/home";
+//    }
 
     @GetMapping("/home")
     public String goHome() {
@@ -82,23 +82,23 @@ public class MemberController {
     }
 
 
-//    @PostMapping("/member/auth")
-//    public String authMember(@RequestParam String id, @RequestParam String name, Model model) {
-//        Member mem = memberRepository.findById(id).orElse(null);
-//        if (mem == null) {
-//            return "member/error";
-//        }
-//
-//        System.out.println("id=" + id + ", name=" + name);
-//        if(mem.getId().equals(id) && mem.getName().equals(name)) {
-//            System.out.println(mem.toString());
-//            model.addAttribute("mem", mem);
-//            return "member/info";
-//        }else{
-//            return "member/error";
-//        }
-//
-//    }
+    @PostMapping("/member/auth")
+    public String authMember(@RequestParam String id, @RequestParam String name, HttpSession session) {
+        Member mem = memberRepository.findById(id).orElse(null);
+        if (mem == null) {
+            return "member/error";
+        }
+
+        System.out.println("id=" + id + ", name=" + name);
+        if(mem.getId().equals(id) && mem.getName().equals(name)) {
+            System.out.println(mem.toString());
+            session.setAttribute("User", mem);
+            return "redirect:/home";
+        }else{
+            return "member/error";
+        }
+
+    }
     @PostMapping("/member/new")
     public String createMember(MemberForm mform, Model model){
         System.out.println(mform.toString());

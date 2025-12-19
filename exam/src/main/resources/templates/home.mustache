@@ -1,0 +1,58 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <div class="container text-center">
+        <img src="/images/title.jpg" class="img-fluid" alt="로고 이미지">
+    </div>
+    <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;" data-bs-theme="light">
+        <div class="container-fluid">
+            <div class="navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    {{#user}}
+                        <a href="/member/info" class="nav-link">마이페이지</a>
+                        <a href="/member/logout" class="nav-link">로그아웃</a>
+                        <span class="navbar-text text-danger-emphasis ms-2">[ {{id}} 님 환영합니다! ]</span>
+                    {{/user}}
+
+                    {{^user}}
+                        <a href="/member/login" class="nav-link">로그인</a>
+                        <a href="/member/join" class="nav-link">회원가입</a>
+                    {{/user}}
+                </div>
+            </div>
+        </div>
+    </nav>
+    <footer class="bg-light border-top mt-3">
+        <div class="container py-4">
+
+            <div class="row">
+
+                <!-- 회사 / 사이트 정보 -->
+                <div class="col-md-6 mb-3">
+                    <h5 class="fw-bold">MySite</h5>
+                    <p class="text-muted mb-1">Spring Boot · JPA · Bootstrap</p>
+                    <p class="text-muted mb-0">© 2025 MySite. All rights reserved.</p>
+                </div>
+                <!-- 고객센터 -->
+                <div class="col-md-6 mb-3">
+                    <h6 class="fw-bold">고객센터</h6>
+                    <p class="text-muted mb-1">이메일: help@mysite.com</p>
+                    <p class="text-muted mb-1">전화: 02-1234-5678</p>
+                    <p class="text-muted mb-0">운영시간: 평일 09:00 ~ 18:00</p>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>
