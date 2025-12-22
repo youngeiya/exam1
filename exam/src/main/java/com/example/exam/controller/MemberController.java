@@ -1,8 +1,12 @@
 package com.example.exam.controller;
 
+import com.example.exam.dto.BoardForm;
 import com.example.exam.dto.MemberForm;
+import com.example.exam.entity.Board;
 import com.example.exam.entity.Member;
+import com.example.exam.repository.BoardRepository;
 import com.example.exam.repository.MemberRepository;
+import com.example.exam.service.BoardService;
 import com.example.exam.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +26,13 @@ import java.util.Optional;
 public class MemberController {
     @Autowired
     MemberService memberService;
-
+    @Autowired
+    BoardService boardService;
 
     @Autowired
     MemberRepository memberRepository;
-
+    @Autowired
+    private BoardRepository boardRepository;
     @GetMapping("/member/login")
     public String loginMember(@RequestParam(required = false) String msg,
                               Model model) {
@@ -47,10 +53,15 @@ public class MemberController {
 //    }
 
     @GetMapping("/home")
-    public String goHome() {
+    public String goHome(Model model) {
         log.info("HomeController 진입");
+        // Repository 대신 Service의 getTop5Boards 호출
+        List<BoardForm> boardList = boardService.getBoardtop();
+
+        model.addAttribute("boardList", boardList);
         return "home";
     }
+
 
     @GetMapping("/member/join")
     public String joinMember() {
@@ -83,14 +94,14 @@ public class MemberController {
 
 
     @PostMapping("/member/auth")
-    public String authMember(@RequestParam String id, @RequestParam String name, HttpSession session) {
+    public String authMember(@RequestParam String id, @RequestParam String pwd, HttpSession session) {
         Member mem = memberRepository.findById(id).orElse(null);
         if (mem == null) {
             return "member/error";
         }
 
-        System.out.println("id=" + id + ", name=" + name);
-        if(mem.getId().equals(id) && mem.getName().equals(name)) {
+        System.out.println("id=" + id + ", pwd=" + pwd);
+        if(mem.getId().equals(id) && mem.getPwd().equals(pwd)) {
             System.out.println(mem.toString());
             session.setAttribute("User", mem);
             return "redirect:/home";

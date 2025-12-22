@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <div class="container text-center">
-        <img src="/images/title.jpg" class="img-fluid" alt="로고 이미지">
+        <img src="/img/lastyear.jpg" class="img-fluid" alt="로고 이미지">
     </div>
     <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;" data-bs-theme="light">
         <div class="container-fluid">
@@ -30,6 +30,33 @@
             </div>
         </div>
     </nav>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold">게시판 목록</h4>
+            <a href="/board/input" class="btn btn-outline-primary btn-sm">글쓰기</a>
+        </div>
+
+        <div class="list-group shadow-sm">
+            {{#boardList}}
+                <a href="board/info/{{id}}" class="list-group-item list-group-item-action py-3">
+                    <span class="fw-medium text-dark">{{title}}</span>
+                </a>
+            {{/boardList}}
+
+            {{^boardList}}
+                <div class="list-group-item text-center py-5 text-muted">
+                    첫 게시글의 주인공이 되어보세요!
+                </div>
+            {{/boardList}}
+        </div>
+    </div>
+
+    <footer class="bg-light border-top mt-5">
+
+
+
     <footer class="bg-light border-top mt-3">
         <div class="container py-4">
 

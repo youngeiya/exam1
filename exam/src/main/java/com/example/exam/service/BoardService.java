@@ -62,6 +62,14 @@ public class BoardService {
 //}
 //
 
+   public List<BoardForm> getBoardtop(){
+       List<Board> boards = boardRepository.findTop5ByOrderByIdDesc();
+       return boards.stream()
+               .map(BoardForm::toDto)
+               .toList();
+
+
+    }
     public BoardForm createBoard(BoardForm form) {
 // 1) 유효성 검증
 

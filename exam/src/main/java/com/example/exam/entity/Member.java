@@ -16,6 +16,8 @@ public class Member {
     @Column
     private String id;
     @Column
+    private String pwd;
+    @Column
     private String name;
     @Column
     private int age;
@@ -23,8 +25,7 @@ public class Member {
     private String addr;
     @Column
     private String mobile;
-    @Column
-    private String pwd;
+
 
 
 }
