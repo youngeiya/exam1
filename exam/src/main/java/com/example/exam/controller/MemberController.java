@@ -79,19 +79,34 @@ public class MemberController {
 
 
 
-    @GetMapping("/member/info/{id}")
-    public String infoMember(@PathVariable String id, Model model) {
-        Member mem = new Member();
-        System.out.println("id=" + id );
-        if(mem.getId().equals(id)) {
-            System.out.println(mem.toString());
-            model.addAttribute("mem", mem);
-            return "member/info";
-        }else{
+//    @GetMapping("/member/info/{id}")
+//    public String infoMember(@PathVariable String id, HttpSession session) {
+//        Member mem = new Member();
+//        System.out.println("id=" + id );
+//        if(mem.getId().equals(id)) {
+//            System.out.println(mem.toString());
+//            session.setAttribute("mem", mem);
+//            return "member/info";
+//        }else{
+//            return "member/error";
+//        }
+//    }
+    @GetMapping("/member/info")
+    public String infoMember(HttpSession session, Model model) {
+        System.out.println("세션 ID: " + session.getId());
+        System.out.println("세션 'user' 값: " + session.getAttribute("user"));
+        System.out.println("세션 'User' 값: " + session.getAttribute("User"));
+        // 세션 Key를 소문자 "user"로 가져오기 (로그인 시에도 "user"로 저장했다고 가정)
+        Member loginUser = (Member) session.getAttribute("User");
+        MemberForm infoUser = memberService.getMember(loginUser.getId());
+        if (infoUser == null) {
+            // 주소 앞에 /member/ 를 붙여서 정확한 로그인 페이지로 이동
             return "member/error";
         }
-    }
 
+        model.addAttribute("mem", infoUser);
+        return "member/info";
+    }
 
     @PostMapping("/member/auth")
     public String authMember(@RequestParam String id, @RequestParam String pwd, HttpSession session) {
@@ -110,7 +125,7 @@ public class MemberController {
         }
 
     }
-    @PostMapping("/member/new")
+    @PostMapping("/member/create")
     public String createMember(MemberForm mform, Model model){
         System.out.println(mform.toString());
 
@@ -119,7 +134,7 @@ public class MemberController {
 
         Member saved = memberRepository.save(member);
         model.addAttribute("member",saved);
-        return "member/create";
+        return "redirect:/board";
 
     }
     @GetMapping("member/edit")

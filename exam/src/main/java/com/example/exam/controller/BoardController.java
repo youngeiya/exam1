@@ -40,6 +40,12 @@ public class BoardController {
         return "board/list";
     }
 
+    // 2. 글쓰기 페이지 호출
+    @GetMapping("/board/new")
+    public String boardNew() {
+        return "board/new"; // new.mustache 호출
+    }
+
     @GetMapping("/board/input")
     public String inputBoard() {
         return "board/input";

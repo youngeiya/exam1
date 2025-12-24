@@ -16,7 +16,7 @@
                 dataType:"json",
                 success:function(data){
                     alert(data.title + data.content);
-                    //location.href = "/board";
+                    location.href = "/board";
 
                 },error:function(xhr){
 
@@ -33,11 +33,12 @@
 
 </head>
 <body>
+{{>layout/top}}
 <h1>글 등록</h1>
 <form method="post"action="/board/create">
     제목: <input type="text" name="title" id="title"><br>
     내용: <textarea name="content"  id="content"></textarea> <br>
-    <button>글 등록하기</button> <input type="button" value="Ajax로 글 등록하기" onclick="add_ok();">
+<input type="button" value="Ajax로 글 등록하기" onclick="add_ok();">
 
 </form>
 </body>

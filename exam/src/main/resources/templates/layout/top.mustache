@@ -5,6 +5,28 @@
     <title>Document</title>
 </head>
 <body>
-<img src="/img/lastyear.jpg" alt="">
+<div class="container text-center">
+    <img src="/img/lastyear.jpg" class="img-fluid" alt="로고 이미지">
+</div>
+<nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd;" data-bs-theme="light">
+    <div class="container-fluid">
+        <div class="navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                {{#user}}
+                    <a href="/member/info" class="nav-link">마이페이지</a>
+                    <a href="/member/logout" class="nav-link">로그아웃</a>
+                    <span class="navbar-text text-danger-emphasis ms-2">[ {{id}} 님 환영합니다! ]</span>
+                {{/user}}
+
+                {{^user}}
+                    <a href="/member/login" class="nav-link">로그인</a>
+                    <a href="/member/join" class="nav-link">회원가입</a>
+                {{/user}}
+            </div>
+        </div>
+    </div>
+</nav>
+</nav>
 </body>
 </html>

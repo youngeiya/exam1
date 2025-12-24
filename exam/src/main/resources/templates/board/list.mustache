@@ -1,93 +1,155 @@
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <title>Document</title>-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+<!--    <script>-->
+<!--        $(document).ready(function(){-->
+<!--            //브라주저를 실행함과 동시에 list ajax 실행-->
+<!--            list_ok();-->
+<!--        });-->
+<!--        function list_ok(){-->
+
+<!--                $.ajax({-->
+<!--                    url:"/api/boards",-->
+<!--                    type:"GET",-->
+<!--                    data: {-->
+<!--                        search: $("#search").val()-->
+<!--                    },-->
+<!--                    dataType:"json",-->
+<!--                    success:function(data){-->
+
+<!--                        var res = "<tr>";-->
+<!--                            res += "<th>번 호</th>";-->
+<!--                            res += "<th>제 목</th>";-->
+<!--                            res += "<th>내 용</th>";-->
+<!--                            res += "</tr>";-->
+
+<!--                        if(data.length == 0) { // 검색 결과가 없을 경우-->
+<!--                            res += "<tr><td colspan=3>게시글이 없습니다.</td></tr>";-->
+<!--                            $("#list").html(res);-->
+<!--                        }else{ // 검색 결과가 있거나 전체 목록이 있는 경우-->
+<!--                            $.each(data, function(i, field){-->
+<!--                                res += "<tr>";-->
+<!--                                res += "<td>"+field.id+"</td>";-->
+<!--                                res += "<td><a href='/board/info/"+field.id+"'>"+field.title+"</a></td>";-->
+<!--                                res += "<td><a href='/board/edit?id="+field.id+"'>"+field.content+"</a></td>";-->
+<!--                                res += "</tr>";-->
+
+<!--                            });-->
+<!--                            $("#list").html(res);-->
+<!--                        }-->
+<!--                    },error:function(xhr){-->
+
+<!--                           alert(xhr.status);-->
+<!--                            const error = JSON.parse(xhr.responseText);-->
+<!--                            alert(error.message);-->
+<!--                    }-->
+<!--                });-->
+
+<!--        }-->
+<!--&lt;!&ndash;        function add_ok(){ //데이터 등록 ajax&ndash;&gt;-->
+
+<!--&lt;!&ndash;            var obj = {"title":$("#title").val(), "content":$("#content").val()};&ndash;&gt;-->
+<!--&lt;!&ndash;            $.ajax({&ndash;&gt;-->
+<!--&lt;!&ndash;                url:"/api/boards",&ndash;&gt;-->
+<!--&lt;!&ndash;                type:"POST",&ndash;&gt;-->
+<!--&lt;!&ndash;                contentType: "application/json; charset=utf-8",&ndash;&gt;-->
+<!--&lt;!&ndash;                data: JSON.stringify(obj),&ndash;&gt;-->
+<!--&lt;!&ndash;                dataType:"json",&ndash;&gt;-->
+<!--&lt;!&ndash;                success:function(data){&ndash;&gt;-->
+<!--&lt;!&ndash;                    //alert(data.title + data.content);&ndash;&gt;-->
+<!--&lt;!&ndash;                    var res = "<tr>";&ndash;&gt;-->
+<!--&lt;!&ndash;                        res += "<td>"+data.id+"</td>";&ndash;&gt;-->
+<!--&lt;!&ndash;                        res += "<td><a href='/board/info/"+data.id+"'>"+data.title+"</a></td>";&ndash;&gt;-->
+<!--&lt;!&ndash;                        res += "<td><a href='/board/edit?id="+data.id+"'>"+data.content+"</a></td>";&ndash;&gt;-->
+<!--&lt;!&ndash;                        res += "</tr>";&ndash;&gt;-->
+<!--&lt;!&ndash;                   $("#list").append(res);&ndash;&gt;-->
+<!--&lt;!&ndash;                   $("#title").val("");&ndash;&gt;-->
+<!--&lt;!&ndash;                   $("#content").val("");&ndash;&gt;-->
+
+<!--&lt;!&ndash;                },error:function(xhr){&ndash;&gt;-->
+
+<!--&lt;!&ndash;                       alert(xhr.status);&ndash;&gt;-->
+<!--&lt;!&ndash;                        const error = JSON.parse(xhr.responseText);&ndash;&gt;-->
+<!--&lt;!&ndash;                        alert(error.message);&ndash;&gt;-->
+<!--&lt;!&ndash;                }&ndash;&gt;-->
+
+<!--&lt;!&ndash;            });&ndash;&gt;-->
+<!--&lt;!&ndash;        }&ndash;&gt;-->
+<!--    </script>-->
+<!--</head>-->
+<!--<body>-->
+<!--&lt;!&ndash;<h2>글 전체 보기, 검색, 글 등록하기</h2>&ndash;&gt;-->
+<!--&lt;!&ndash;<input type="text" name="search" id="search"> <button onclick="list_ok();">검색하기</button>&ndash;&gt;-->
+<!--&lt;!&ndash;<p></p>&ndash;&gt;-->
+<!--&lt;!&ndash;<table border="1" id="list">&ndash;&gt;-->
+<!--&lt;!&ndash;</table>&ndash;&gt;-->
+<!--&lt;!&ndash;제목 : <input type="text" name="title" id="title"><br />&ndash;&gt;-->
+<!--&lt;!&ndash;내용 : <textarea name="content" id="content"></textarea><br />&ndash;&gt;-->
+<!--&lt;!&ndash;<input type="button" value="Ajax로 글 등록하기" onclick="add_ok();">&ndash;&gt;-->
+<!--</body>-->
+<!--</html>-->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
+    <title>게시글 목록</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
-            //브라주저를 실행함과 동시에 list ajax 실행
-            list_ok();
+            list_ok(); // 페이지 로드 시 목록 불러오기
         });
+
         function list_ok(){
-
-                $.ajax({
-                    url:"/api/boards",
-                    type:"GET",
-                    data: {
-                        search: $("#search").val()
-                    },
-                    dataType:"json",
-                    success:function(data){
-
-                        var res = "<tr>";
-                            res += "<th>번 호</th>";
-                            res += "<th>제 목</th>";
-                            res += "<th>내 용</th>";
-                            res += "</tr>";
-
-                        if(data.length == 0) { // 검색 결과가 없을 경우
-                            res += "<tr><td colspan=3>게시글이 없습니다.</td></tr>";
-                            $("#list").html(res);
-                        }else{ // 검색 결과가 있거나 전체 목록이 있는 경우
-                            $.each(data, function(i, field){
-                                res += "<tr>";
-                                res += "<td>"+field.id+"</td>";
-                                res += "<td><a href='/board/info/"+field.id+"'>"+field.title+"</a></td>";
-                                res += "<td><a href='/board/edit?id="+field.id+"'>"+field.content+"</a></td>";
-                                res += "</tr>";
-
-                            });
-                            $("#list").html(res);
-                        }
-                    },error:function(xhr){
-
-                           alert(xhr.status);
-                            const error = JSON.parse(xhr.responseText);
-                            alert(error.message);
-                    }
-                });
-
-        }
-        function add_ok(){ //데이터 등록 ajax
-
-            var obj = {"title":$("#title").val(), "content":$("#content").val()};
             $.ajax({
                 url:"/api/boards",
-                type:"POST",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(obj),
+                type:"GET",
+                data: {
+                    search: $("#search").val()
+                },
                 dataType:"json",
                 success:function(data){
-                    //alert(data.title + data.content);
                     var res = "<tr>";
-                        res += "<td>"+data.id+"</td>";
-                        res += "<td><a href='/board/info/"+data.id+"'>"+data.title+"</a></td>";
-                        res += "<td><a href='/board/edit?id="+data.id+"'>"+data.content+"</a></td>";
+                        res += "<th>번 호</th>";
+                        res += "<th>제 목</th>";
+                        res += "<th>내 용</th>";
                         res += "</tr>";
-                   $("#list").append(res);
-                   $("#title").val("");
-                   $("#content").val("");
 
-                },error:function(xhr){
-
-                       alert(xhr.status);
-                        const error = JSON.parse(xhr.responseText);
-                        alert(error.message);
+                    if(data.length == 0) {
+                        res += "<tr><td colspan=3>게시글이 없습니다.</td></tr>";
+                    } else {
+                        $.each(data, function(i, field){
+                            res += "<tr>";
+                            res += "<td>"+field.id+"</td>";
+                            // 제목 클릭 시 상세페이지 이동
+                            res += "<td><a href='/board/info/"+field.id+"'>"+field.title+"</a></td>";
+                            res += "<td>"+field.content+"</td>";
+                            res += "</tr>";
+                        });
+                    }
+                    $("#list").html(res); // <table> 태그 안에 결과 주입
+                },
+                error:function(xhr){
+                    alert("에러 발생: " + xhr.status);
                 }
-
             });
         }
     </script>
 </head>
 <body>
-<h2>글 전체 보기, 검색, 글 등록하기</h2>
-<input type="text" name="search" id="search"> <button onclick="list_ok();">검색하기</button>
+<h2>게시글 목록</h2>
+
+<input type="text" name="search" id="search" placeholder="검색어 입력">
+<button onclick="list_ok();">검색하기</button>
+
 <p></p>
-<table border="1" id="list">
+
+<table border="1" id="list" style="width:100%; text-align:center;">
 </table>
-제목 : <input type="text" name="title" id="title"><br />
-내용 : <textarea name="content" id="content"></textarea><br />
-<input type="button" value="Ajax로 글 등록하기" onclick="add_ok();">
+
+<br>
+<button onclick="location.href='/board/input'">글쓰기 페이지로 이동</button>
 </body>
 </html>
