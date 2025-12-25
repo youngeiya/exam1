@@ -1,11 +1,14 @@
 package com.example.exam.controller;
 
 import com.example.exam.dto.BoardForm;
+import com.example.exam.dto.BoardListDTO;
 import com.example.exam.dto.CommentDto;
+import com.example.exam.dto.Member;
 import com.example.exam.entity.Board;
 import com.example.exam.repository.BoardRepository;
 import com.example.exam.service.BoardService;
 import com.example.exam.service.CommentService;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -118,5 +121,19 @@ public class BoardController {
             return "error/merror";
         }
     }
+    @GetMapping("/board/myposts")
+    public String myBoardList(HttpSession session, Model model) {
+        // 세션에서 로그인한 유저 정보 가져오기
+        Member loginUser = (Member) session.getAttribute("User");
 
+        if (loginUser == null) {
+            return "redirect:/member/login";
+        }
+
+        // 서비스 호출 (DTO 리스트 반환)
+        List<BoardListDTO> myPosts = boardService.getMyPosts(loginUser.getId());
+
+        model.addAttribute("posts", myPosts);
+        return "board/myPosts"; // 새로 만들 머스테치/타임리프 파일
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.exam.service;
 
 import com.example.exam.dto.BoardForm;
+import com.example.exam.dto.BoardListDTO;
 import com.example.exam.entity.Board;
 import com.example.exam.repository.BoardRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -117,6 +119,24 @@ public class BoardService {
                 throw new RuntimeException("DB 수정 중 오류가 발생했습니다.", e);
             }
         }
+
+
+
+        public List<BoardListDTO> getMyPosts(Long memberId) {
+            // 1. DB에서 해당 회원이 쓴 글(Entity)을 모두 가져옴
+            List<Board> boards = boardRepository.findByMemberIdOrderByCreatedAtDesc(memberId);
+
+            // 2. Entity 리스트를 DTO 리스트로 변환 (Stream 사용 시 편리합니다)
+            return boards.stream()
+                    .map(board -> new BoardListDTO(
+                            board.getId(),
+                            board.getTitle(),
+                            board.getCreatedAt()
+                    ))
+                    .collect(Collectors.toList());
+        }
+    }
+
 //    @Transactional
 //    public boolean deleteBoard(Long id) {
 //        // 1. 대상 엔티티 조회
@@ -134,4 +154,4 @@ public class BoardService {
 //            return false; // 삭제 실패
 //        }
 //    }
-}
+

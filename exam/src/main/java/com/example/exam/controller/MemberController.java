@@ -95,7 +95,7 @@ public class MemberController {
 //            return "member/error";
 //        }
 //    }
-    @GetMapping("/member/info")
+    @GetMapping("/member/mypage")
     public String infoMember(HttpSession session, Model model) {
         System.out.println("세션 ID: " + session.getId());
         System.out.println("세션 'user' 값: " + session.getAttribute("user"));
@@ -109,7 +109,7 @@ public class MemberController {
         }
 
         model.addAttribute("mem", infoUser);
-        return "member/info";
+        return "member/mypage";
     }
 
     @PostMapping("/member/auth")

@@ -17,7 +17,7 @@ public class Member {
         this.mobile = mobile;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
