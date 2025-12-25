@@ -35,9 +35,13 @@ public class MemberController {
     private BoardRepository boardRepository;
     @GetMapping("/member/login")
     public String loginMember(@RequestParam(required = false) String msg,
+                              @RequestParam(required = false) String link,
                               Model model) {
         if ("required".equals(msg)) {
             model.addAttribute("message", "로그인이 필요한 페이지입니다.");
+            //이전페이지 정보 추가
+            model.addAttribute("link", link);
+            System.out.println("이전 페이지 정보 "+link);
         }
         return "member/login";
     }
@@ -109,21 +113,40 @@ public class MemberController {
     }
 
     @PostMapping("/member/auth")
-    public String authMember(@RequestParam String id, @RequestParam String pwd, HttpSession session) {
+    public String authMember(@RequestParam String id,
+                             @RequestParam String pwd,
+                             HttpSession session,
+                             @RequestParam(required = false) String link) {
+
+        // 1. Repository를 통해 아이디로 회원 조회
+        // (memberService 내부에 이 로직이 있다면 서비스 호출을 권장하지만, 요청하신 대로 Repository를 직접 사용하는 경우)
         Member mem = memberRepository.findById(id).orElse(null);
+
+        // 2. 회원이 존재하지 않는 경우 처리
         if (mem == null) {
+            log.info("로그인 실패: 아이디가 존재하지 않음 - {}", id);
             return "member/error";
         }
 
-        System.out.println("id=" + id + ", pwd=" + pwd);
-        if(mem.getId().equals(id) && mem.getPwd().equals(pwd)) {
-            System.out.println(mem.toString());
+        // 3. 비밀번호 일치 여부 확인
+        // 주의: 실제 서비스에서는 pwd.equals() 대신 암호화된 비밀번호 매칭(BCrypt 등)을 사용해야 합니다.
+        if (mem.getId().equals(id) && mem.getPwd().equals(pwd)) {
+            log.info("로그인 성공: {}", mem.toString());
+
+            // 세션에 회원 정보 저장
             session.setAttribute("User", mem);
-            return "redirect:/home";
-        }else{
+
+            // 4. 리다이렉트 처리 (기존 link 로직 유지)
+            if (link == null || link.isBlank()) {
+                return "redirect:/home";
+            } else {
+                return "redirect:" + link;
+            }
+        } else {
+            // 비밀번호 불일치 시
+            log.info("로그인 실패: 비밀번호 불일치 - {}", id);
             return "member/error";
         }
-
     }
     @PostMapping("/member/create")
     public String createMember(MemberForm mform, Model model){

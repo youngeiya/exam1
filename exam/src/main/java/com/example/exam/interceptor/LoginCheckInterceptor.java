@@ -21,7 +21,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession(false);
 
         if (session == null || session.getAttribute("User") == null) {
-            response.sendRedirect("/member/login?msg=required");
+            response.sendRedirect("/member/login?msg=required&link="+request.getRequestURI());
             return false; // 컨트롤러 진입 차단
         }
 
