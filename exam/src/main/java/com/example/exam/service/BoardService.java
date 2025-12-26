@@ -122,19 +122,19 @@ public class BoardService {
 
 
 
-        public List<BoardListDTO> getMyPosts(Long memberId) {
-            // 1. DB에서 해당 회원이 쓴 글(Entity)을 모두 가져옴
-            List<Board> boards = boardRepository.findByMemberIdOrderByCreatedAtDesc(memberId);
-
-            // 2. Entity 리스트를 DTO 리스트로 변환 (Stream 사용 시 편리합니다)
-            return boards.stream()
-                    .map(board -> new BoardListDTO(
-                            board.getId(),
-                            board.getTitle(),
-                            board.getCreatedAt()
-                    ))
-                    .collect(Collectors.toList());
-        }
+//        public List<BoardListDTO> getMyPosts(Long memberId) {
+//            // 1. DB에서 해당 회원이 쓴 글(Entity)을 모두 가져옴
+//            List<Board> boards = boardRepository.findByMemberIdOrderByCreatedAtDesc(memberId);
+//
+//            // 2. Entity 리스트를 DTO 리스트로 변환 (Stream 사용 시 편리합니다)
+//            return boards.stream()
+//                    .map(board -> new BoardListDTO(
+//                            board.getId(),
+//                            board.getTitle(),
+//                            board.getCreatedAt()
+//                    ))
+//                    .collect(Collectors.toList());
+//        }
     }
 
 //    @Transactional

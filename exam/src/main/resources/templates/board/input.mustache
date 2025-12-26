@@ -7,7 +7,7 @@
     <script>
         function add_ok(){
 
-            var obj = {"title":$("#title").val(), "content":$("#content").val()};
+            var obj = {"title":$("#title").val(), "content":$("#content").val(),"memberid":$("#memberid").val()};
             $.ajax({
                 url:"/api/boards",
                 type:"POST",
@@ -37,6 +37,8 @@
 <h1>글 등록</h1>
 <form method="post"action="/board/create">
     제목: <input type="text" name="title" id="title"><br>
+    글쓴이: <span>{{user.id}}</span>
+    <input type="hidden" id="memberid" value="{{user.id}}"><br>
     내용: <textarea name="content"  id="content"></textarea> <br>
 <input type="button" value="Ajax로 글 등록하기" onclick="add_ok();">
 

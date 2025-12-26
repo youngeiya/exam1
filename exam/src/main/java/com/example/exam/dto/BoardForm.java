@@ -13,17 +13,19 @@ import java.time.LocalDateTime;
 @Setter
 public class BoardForm {
     private Long id;
+    private String memberid;
+
     private String title;
     private String content;
     private LocalDateTime createdAt;
 
     //DTO를 Entity로 변환
     public Board toEntity() {
-        return new Board(id, title, content,createdAt);
+        return new Board(id,memberid, title, content,createdAt);
     }
 
     //Entity를 DTO 로 변환
     public static BoardForm toDto(Board board) {
-        return new BoardForm(board.getId(), board.getTitle(), board.getContent(),board.getCreatedAt());
+        return new BoardForm(board.getId(),board.getMemberid(), board.getTitle(), board.getContent(),board.getCreatedAt());
     }
 }

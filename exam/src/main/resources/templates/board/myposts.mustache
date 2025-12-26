@@ -5,6 +5,22 @@
     <title>Document</title>
 </head>
 <body>
-
+<script>
+    function list_my_posts(){
+     $.ajax({
+         url: "/api/boards", // 또는 전용 엔드포인트 "/api/boards/my"
+         type: "GET",
+         data: {
+             search: $("#search").val(),
+             writer: "현재_로그인한_ID" // 서버 세션에서 가져오거나 전역 변수 사용
+         },
+         dataType: "json",
+         success: function(data){
+             // 기존과 동일한 테이블 생성 로직
+             renderTable(data);
+         }
+     });
+ }
+</script>
 </body>
 </html>

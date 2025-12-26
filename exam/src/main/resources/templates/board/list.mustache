@@ -114,17 +114,19 @@
                     var res = "<tr>";
                         res += "<th>번 호</th>";
                         res += "<th>제 목</th>";
+                        res += "<th>작성자</th>";
                         res += "<th>내 용</th>";
                         res += "</tr>";
 
                     if(data.length == 0) {
-                        res += "<tr><td colspan=3>게시글이 없습니다.</td></tr>";
+                        res += "<tr><td colspan=4>게시글이 없습니다.</td></tr>";
                     } else {
                         $.each(data, function(i, field){
                             res += "<tr>";
                             res += "<td>"+field.id+"</td>";
                             // 제목 클릭 시 상세페이지 이동
                             res += "<td><a href='/board/info/"+field.id+"'>"+field.title+"</a></td>";
+                            res += "<td>"+ (field.memberid || field.memberId || "알 수 없음") +"</td>";
                             res += "<td>"+field.content+"</td>";
                             res += "</tr>";
                         });

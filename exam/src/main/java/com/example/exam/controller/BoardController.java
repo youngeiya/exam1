@@ -3,11 +3,12 @@ package com.example.exam.controller;
 import com.example.exam.dto.BoardForm;
 import com.example.exam.dto.BoardListDTO;
 import com.example.exam.dto.CommentDto;
-import com.example.exam.dto.Member;
 import com.example.exam.entity.Board;
+import com.example.exam.entity.Member;
 import com.example.exam.repository.BoardRepository;
 import com.example.exam.service.BoardService;
 import com.example.exam.service.CommentService;
+import com.example.exam.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,10 @@ import java.util.Optional;
 @Slf4j
 @Controller
 public class BoardController {
+
+
+    @Autowired
+    MemberService memberService;
 
     @Autowired
     BoardRepository boardRepository;
@@ -131,9 +136,9 @@ public class BoardController {
         }
 
         // 서비스 호출 (DTO 리스트 반환)
-        List<BoardListDTO> myPosts = boardService.getMyPosts(loginUser.getId());
+        //List<BoardListDTO> myPosts = boardService.getMyPosts(loginUser.getId());
 
-        model.addAttribute("posts", myPosts);
+       // model.addAttribute("posts", myPosts);
         return "board/myPosts"; // 새로 만들 머스테치/타임리프 파일
     }
 }
